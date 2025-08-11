@@ -1,0 +1,193 @@
+import { useState, useRef, useEffect } from "react";
+import { FaRobot, FaUser, FaPaperPlane, FaComments } from "react-icons/fa";
+
+export default function ChatBot() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [hasAutoOpened, setHasAutoOpened] = useState(false);
+  const [hasFetchedGreeting, setHasFetchedGreeting] = useState(false);
+  const chatRef = useRef(null);
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL; // set in your .env
+
+  const sendMessage = async (text = userInput) => {
+    if (!text.trim()) return;
+
+    const newMessages = [...messages, { sender: "user", text }];
+    setMessages(newMessages);
+    setUserInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+
+      if (!res.ok) throw new Error("Network error");
+
+      const data = await res.json();
+      setMessages([...newMessages, { sender: "bot", text: data.reply }]);
+    } catch (error) {
+      setMessages([
+        ...newMessages,
+        {
+          sender: "bot",
+          text: "⚠️ Sorry, I couldn't reach Aerion Medtech's assistant right now.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch welcome message from API
+  const fetchGreeting = async () => {
+    if (hasFetchedGreeting) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message:
+            "Send a friendly welcome message small message introducing Aerion Medtech and asking how we can assist.",
+        }),
+      });
+
+      if (!res.ok) throw new Error("Network error");
+
+      const data = await res.json();
+      setMessages([{ sender: "bot", text: data.reply }]);
+      setHasFetchedGreeting(true);
+    } catch {
+      setMessages([
+        {
+          sender: "bot",
+          text: "👋 Welcome! How can Aerion Medtech help you today?",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Auto-scroll when new messages arrive
+  useEffect(() => {
+    chatRef.current?.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
+
+  // Auto-open after scroll or 5 seconds
+  useEffect(() => {
+    const openWithGreeting = () => {
+      if (!hasAutoOpened) {
+        setOpen(true);
+        fetchGreeting();
+        setHasAutoOpened(true);
+      }
+    };
+
+    const timer = setTimeout(openWithGreeting, 5000);
+    const onScroll = () => {
+      if (window.scrollY > 100) {
+        openWithGreeting();
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [hasAutoOpened]);
+
+  // Fetch greeting when manually opened for the first time
+  useEffect(() => {
+    if (open && !hasFetchedGreeting) {
+      fetchGreeting();
+    }
+  }, [open]);
+
+  return (
+    <>
+      {/* Floating Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="fixed bottom-6 right-6 z-50 bg-[#1F2F5A] text-white w-14 h-14 rounded-full shadow-md hover:scale-105 transition-all flex items-center justify-center"
+      >
+        <FaComments className="text-white" size={20} />
+      </button>
+
+      {/* Chat Window */}
+      {open && (
+        <div className="fixed bottom-24 right-6 w-80 h-[500px] bg-white text-black shadow-2xl rounded-xl flex flex-col border border-gray-200 overflow-hidden z-50 animate-[fadeIn_0.3s_ease-in-out]">
+          <div className="bg-[#1F2F5A] text-white p-3 text-center font-semibold">
+             Aerion Medtech Assistant
+          </div>
+
+          {/* Chat Messages */}
+          <div
+            ref={chatRef}
+            className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50"
+          >
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex items-start gap-2 ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {msg.sender === "bot" && (
+                  <FaRobot className="text-[#1F2F5A] mt-1" />
+                )}
+                <div
+                  className={`max-w-[75%] px-4 py-2 rounded-xl text-sm ${
+                    msg.sender === "user"
+                      ? "bg-[#1F2F5A] text-white rounded-br-none"
+                      : "bg-white text-black border border-gray-300 rounded-bl-none shadow-sm"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+                {msg.sender === "user" && (
+                  <FaUser className="text-[#1F2F5A] mt-1" />
+                )}
+              </div>
+            ))}
+            {loading && (
+              <div className="text-gray-400 text-xs animate-pulse">
+                Assistant is typing...
+              </div>
+            )}
+          </div>
+
+          {/* Input Section */}
+          <div className="p-3 border-t border-gray-200 bg-white">
+            <div className="relative flex items-center rounded-full bg-gray-100 border border-gray-200 shadow-inner focus-within:ring-2 focus-within:ring-[#1F2F5A] transition-all">
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Type your message..."
+                className="flex-1 px-4 py-2 bg-transparent border-none text-black placeholder-gray-500 focus:outline-none rounded-full"
+              />
+              <button
+                onClick={() => sendMessage()}
+                className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#1F2F5A] text-white p-2 rounded-full hover:bg-[#172443] hover:scale-110 transition-all"
+              >
+                <FaPaperPlane size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
