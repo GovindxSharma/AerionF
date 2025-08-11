@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../assets/aerionstick.PNG"; // update path if needed
+import logo from "../assets/aerionstick.png"; // update path if needed
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
