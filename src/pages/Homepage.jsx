@@ -10,7 +10,7 @@ import ChatBot from '../components/Chatbot'
 
 const Homepage = () => {
   return (
-    <div  className="bg-white text-gray-800">
+    <>
     <Navbar/>
     <Hero/>
     <About/>
@@ -19,7 +19,7 @@ const Homepage = () => {
     <ContactSection/>
     <Footer/>
     <ChatBot/>
-    </div>
+    </>
   )
 }
 

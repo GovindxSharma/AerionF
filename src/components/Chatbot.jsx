@@ -6,11 +6,12 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [hasAutoOpened, setHasAutoOpened] = useState(false);
+  const [unread, setUnread] = useState(false);
   const [hasFetchedGreeting, setHasFetchedGreeting] = useState(false);
   const chatRef = useRef(null);
+  const audioRef = useRef(null);
 
-  const API_BASE = import.meta.env.VITE_API_BASE_URL; // set in your .env
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   const sendMessage = async (text = userInput) => {
     if (!text.trim()) return;
@@ -44,7 +45,6 @@ export default function ChatBot() {
     }
   };
 
-  // Fetch welcome message from API
   const fetchGreeting = async () => {
     if (hasFetchedGreeting) return;
     setLoading(true);
@@ -75,7 +75,6 @@ export default function ChatBot() {
     }
   };
 
-  // Auto-scroll when new messages arrive
   useEffect(() => {
     chatRef.current?.scrollTo({
       top: chatRef.current.scrollHeight,
@@ -83,31 +82,68 @@ export default function ChatBot() {
     });
   }, [messages]);
 
-  // Auto-open after scroll or 5 seconds
+  // 🔔 Notification sound + badge after 5 seconds (only once per visit)
   useEffect(() => {
-    const openWithGreeting = () => {
-      if (!hasAutoOpened) {
-        setOpen(true);
-        fetchGreeting();
-        setHasAutoOpened(true);
+    const audio = new Audio("/notify.mp3");
+    audioRef.current = audio;
+    audio.load();
+
+    let unlocked = false;
+
+    const unlockAudio = () => {
+      if (!unlocked) {
+        audio
+          .play()
+          .then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            unlocked = true;
+          })
+          .catch(() => {});
       }
     };
 
-    const timer = setTimeout(openWithGreeting, 5000);
-    const onScroll = () => {
-      if (window.scrollY > 100) {
-        openWithGreeting();
+    // Listen for ANY first user interaction
+    const interactionEvents = [
+      "click",
+      "keydown",
+      "scroll",
+      "mousemove",
+      "touchstart",
+      "touchmove",
+      "wheel",
+      "mousedown"
+    ];
+    interactionEvents.forEach(event =>
+      window.addEventListener(event, unlockAudio, { once: true })
+    );
+
+    // Trigger after 5 seconds
+    const timer = setTimeout(() => {
+      if (!open) {
+        setUnread(true);
+        if (unlocked) {
+          audio.play().catch(() => {});
+        }
       }
-    };
-    window.addEventListener("scroll", onScroll);
+    }, 5000);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("scroll", onScroll);
+      interactionEvents.forEach(event =>
+        window.removeEventListener(event, unlockAudio)
+      );
     };
-  }, [hasAutoOpened]);
+  }, []);
 
-  // Fetch greeting when manually opened for the first time
+  // Clear unread badge when chat opens
+  useEffect(() => {
+    if (open) {
+      setUnread(false);
+    }
+  }, [open]);
+
+  // Fetch greeting when opened first time
   useEffect(() => {
     if (open && !hasFetchedGreeting) {
       fetchGreeting();
@@ -122,13 +158,18 @@ export default function ChatBot() {
         className="fixed bottom-6 right-6 z-50 bg-[#1F2F5A] text-white w-14 h-14 rounded-full shadow-md hover:scale-105 transition-all flex items-center justify-center"
       >
         <FaComments className="text-white" size={20} />
+        {unread && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">
+            1
+          </span>
+        )}
       </button>
 
       {/* Chat Window */}
       {open && (
         <div className="fixed bottom-24 right-6 w-80 h-[500px] bg-white text-black shadow-2xl rounded-xl flex flex-col border border-gray-200 overflow-hidden z-50 animate-[fadeIn_0.3s_ease-in-out]">
           <div className="bg-[#1F2F5A] text-white p-3 text-center font-semibold">
-             Aerion Medtech Assistant
+            Aerion Medtech Assistant
           </div>
 
           {/* Chat Messages */}
