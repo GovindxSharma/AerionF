@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="bg-gradient-to-b from-white to-[#f9f9f9] py-20 px-4 sm:px-8 lg:px-24"
+      className="bg-gradient-to-b from-white to-[#f9f9f9] scroll-mt-20  py-20 px-4 sm:px-8 lg:px-24"
     >
       <div className="max-w-7xl mx-auto text-[#1F2F5A] space-y-20">
         {/* ABOUT THE COMPANY */}

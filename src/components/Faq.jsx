@@ -94,7 +94,7 @@ const FAQSection = () => {
 
   return (
     <section
-      className="bg-white py-16 px-4 sm:px-8 lg:px-16"
+      className="bg-white scroll-mt-20  py-16 px-4 sm:px-8 lg:px-16"
       id="faq"
     >
       <h1 className="text-3xl sm:text-4xl font-semibold text-center text-[#1F2F5A] mb-10">
