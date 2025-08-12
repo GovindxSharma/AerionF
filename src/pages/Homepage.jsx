@@ -15,8 +15,8 @@ const Homepage = () => {
     <Hero/>
     <About/>
     <Services/>
-    <FAQSection/>
     <ContactSection/>
+    <FAQSection/>
     <Footer/>
     <ChatBot/>
     </>
