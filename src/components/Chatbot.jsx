@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaRobot, FaUser, FaPaperPlane, FaComments } from "react-icons/fa";
 
 export default function ChatBot() {
@@ -82,7 +82,7 @@ export default function ChatBot() {
     });
   }, [messages]);
 
-  // 🔔 Notification sound + badge after 5 seconds (only once per visit)
+  // Notification sound + badge after modal closed (once)
   useEffect(() => {
     const audio = new Audio("/notify.mp3");
     audioRef.current = audio;
@@ -103,7 +103,7 @@ export default function ChatBot() {
       }
     };
 
-    // Listen for ANY first user interaction
+    // Listen for user interaction to unlock audio
     const interactionEvents = [
       "click",
       "keydown",
@@ -112,29 +112,36 @@ export default function ChatBot() {
       "touchstart",
       "touchmove",
       "wheel",
-      "mousedown"
+      "mousedown",
     ];
-    interactionEvents.forEach(event =>
+    interactionEvents.forEach((event) =>
       window.addEventListener(event, unlockAudio, { once: true })
     );
 
-    // Trigger after 5 seconds
-    const timer = setTimeout(() => {
-      if (!open) {
-        setUnread(true);
-        if (unlocked) {
-          audio.play().catch(() => {});
+    // Handler to start the badge timer after modal closes
+    let timerId = null;
+    const startBadgeTimer = () => {
+      timerId = setTimeout(() => {
+        if (!open) {
+          setUnread(true);
+          if (unlocked) {
+            audio.play().catch(() => {});
+          }
         }
-      }
-    }, 5000);
+      }, 5000); // 5 seconds delay after modal closes
+    };
+
+    // Listen for the custom event that modal closed
+    window.addEventListener("aboutClosed", startBadgeTimer);
 
     return () => {
-      clearTimeout(timer);
-      interactionEvents.forEach(event =>
+      interactionEvents.forEach((event) =>
         window.removeEventListener(event, unlockAudio)
       );
+      window.removeEventListener("aboutClosed", startBadgeTimer);
+      if (timerId) clearTimeout(timerId);
     };
-  }, []);
+  }, [open]);
 
   // Clear unread badge when chat opens
   useEffect(() => {
