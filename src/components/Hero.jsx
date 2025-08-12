@@ -4,7 +4,6 @@ import bgImage from "../assets/bg4.jpg";
 export default function Hero() {
   const [showModal, setShowModal] = useState(false);
 
-  // Auto-open modal after 2 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowModal(true);
@@ -14,35 +13,28 @@ export default function Hero() {
 
   return (
     <>
-      {/* Hero Section */}
       <section
         id="home"
         className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center px-6 sm:px-12 md:px-20"
         style={{ backgroundImage: `url(${bgImage})` }}
       >
-        {/* Overlay */}
         <div className="absolute inset-0 bg-[#1F2F5A]/80 z-0"></div>
 
-        {/* Text Content */}
         <div className="relative z-10 max-w-3xl text-center text-white">
-          {/* Main Heading */}
           <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Transforming Healthcare with Innovative Medical Solutions
           </h3>
 
-          {/* Subheading */}
           <span className="block text-lg sm:text-xl font-medium mb-4 text-[#ae7e4b]">
             Smarter Solutions. Safer Clinics. Stronger Outcomes.
           </span>
 
-          {/* Paragraph */}
           <p className="text-base sm:text-lg mb-8 leading-relaxed">
             Aerion Medtech delivers certified, evidence-backed healthcare
             solutions designed to elevate safety, performance, and patient
             outcomes.
           </p>
 
-          {/* Button Group */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <a
               href="#ContactUs"
@@ -61,36 +53,32 @@ export default function Hero() {
               </a>
             </div>
           </div>
-
         </div>
-
-        {/* Discover Button fixed bottom-left inside hero */}
-        {!showModal && (
-          <button
-            onClick={() => setShowModal(true)}
-            className="absolute bottom-6 left-6 bg-[#ae7e4b] text-white px-5 py-2 rounded-full shadow-lg hover:bg-[#95683d] transition z-10"
-          >
-            Discover
-          </button>
-        )}
       </section>
 
-      {/* Modal */}
+      {/* Discover button fixed to bottom-left of viewport */}
+      {!showModal && (
+        <button
+          onClick={() => setShowModal(true)}
+          className="fixed bottom-6 left-6 bg-[#ae7e4b] text-white px-5 py-2 rounded-full shadow-lg hover:bg-[#95683d] transition z-50 max-w-[calc(100vw-4rem)] sm:max-w-xs"
+        >
+          Discover
+        </button>
+      )}
+
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
           <div className="bg-white max-w-lg w-full rounded-lg shadow-lg p-6 relative animate-fadeIn">
-            {/* Close Button */}
             <button
               onClick={() => {
                 setShowModal(false);
-                window.dispatchEvent(new Event("aboutClosed")); // Notify chatbot
+                window.dispatchEvent(new Event("aboutClosed"));
               }}
               className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-xl"
             >
               &times;
             </button>
 
-            {/* Modal Content */}
             <h2 className="text-xl font-bold text-[#1F2F5A] mb-3">
               Discover Aerion Medtech
             </h2>
@@ -113,7 +101,6 @@ export default function Hero() {
         </div>
       )}
 
-      {/* Animation */}
       <style jsx>{`
         @keyframes fadeIn {
           0% {
