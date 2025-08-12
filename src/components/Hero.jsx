@@ -61,18 +61,19 @@ export default function Hero() {
               </a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Floating Button */}
-      {!showModal && (
-        <button
-          onClick={() => setShowModal(true)}
-          className="fixed bottom-6 left-6 bg-[#ae7e4b] text-white px-4 py-2 rounded-full shadow-lg hover:bg-[#95683d] transition"
-        >
-          Discover
-        </button>
-      )}
+        </div>
+
+        {/* Discover Button fixed bottom-left inside hero */}
+        {!showModal && (
+          <button
+            onClick={() => setShowModal(true)}
+            className="absolute bottom-6 left-6 bg-[#ae7e4b] text-white px-5 py-2 rounded-full shadow-lg hover:bg-[#95683d] transition z-10"
+          >
+            Discover
+          </button>
+        )}
+      </section>
 
       {/* Modal */}
       {showModal && (
@@ -82,9 +83,9 @@ export default function Hero() {
             <button
               onClick={() => {
                 setShowModal(false);
-                window.dispatchEvent(new Event("aboutClosed")); // 🚀 Notify chatbot
+                window.dispatchEvent(new Event("aboutClosed")); // Notify chatbot
               }}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+              className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-xl"
             >
               &times;
             </button>
@@ -99,7 +100,7 @@ export default function Hero() {
                 Aerion Medtech
               </span>
               , we specialize in sourcing and supplying everything a medical
-              institution needs-from advanced diagnostic equipment and surgical
+              institution needs—from advanced diagnostic equipment and surgical
               tools to everyday clinical essentials. We aim to work closely with
               hospitals, clinics, and healthcare professionals to provide
               reliable access to high-quality, innovative medical technologies.
