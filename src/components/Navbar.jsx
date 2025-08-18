@@ -3,69 +3,122 @@ import logo from "../assets/aerionstick.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
+  const links = [
+    { name: "Home", href: "#home", id: "home" },
+    { name: "About", href: "#about", id: "about" }, // will trigger also for OurServices
+    { name: "Enquire", href: "#enquire", id: "enquire" },
+    { name: "Resources", href: "#faq", id: "faq" },
+    { name: "Contact", href: "#contact", id: "contact" },
+  ];
+
+  // Shrink navbar on scroll
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll spy for active section
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id], footer[id]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Treat both 'about' and 'OurServices' as 'about'
+            if (entry.target.id === "about" || entry.target.id === "OurServices") {
+              setActiveSection("about");
+            } else {
+              setActiveSection(entry.target.id);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.4,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+    return () => sections.forEach((sec) => observer.unobserve(sec));
+  }, []);
+
+  // Close mobile menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
       if (
         isOpen &&
         menuRef.current &&
-        !menuRef.current.contains(event.target) &&
+        !menuRef.current.contains(e.target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(event.target)
+        !buttonRef.current.contains(e.target)
       ) {
         setIsOpen(false);
       }
-    }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  // Smooth scroll with offset
+  const handleNavClick = (id) => {
+    let scrollToId = id;
+
+    // For About link, scroll to About section
+    if (id === "about") scrollToId = "about";
+
+    const el = document.getElementById(scrollToId);
+    if (el) {
+      const yOffset = -80; // height of navbar
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+    setIsOpen(false); // close mobile menu
+  };
+
   return (
-    <nav className="bg-white shadow-md fixed top-0 w-full z-50">
-      <div className="max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <img src={logo} alt="Aerion Logo" className="h-16 sm:h-20" />
+    <nav
+      className={`bg-white shadow-md fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? "py-2" : "py-4"
+      }`}
+    >
+      <div className="max-w-screen-xl mx-auto px-6 flex justify-between items-center">
+        {/* Logo */}
+        <div className="flex items-center transition-all duration-300">
+          <img
+            src={logo}
+            alt="Aerion Logo"
+            className={`transition-all duration-300 ${
+              isScrolled ? "h-12 sm:h-16" : "h-16 sm:h-20"
+            }`}
+          />
         </div>
 
         {/* Desktop Menu */}
         <ul className="hidden sm:flex space-x-6">
-          <li>
-            <a
-              href="#"
-              className="block text-[#1F2F5A] hover:text-[#72512E] transition"
-            >
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              href="#about"
-              className="block text-[#1F2F5A] hover:text-[#72512E] transition"
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="#faq"
-              className="block text-[#1F2F5A] hover:text-[#72512E] transition"
-            >
-              Resources
-            </a>
-          </li>
-          <li>
-            <a
-              href="#contact"
-              className="block text-[#1F2F5A] hover:text-[#72512E] transition"
-            >
-              Contact
-            </a>
-          </li>
+          {links.map((link) => (
+            <li key={link.name}>
+              <button
+                onClick={() => handleNavClick(link.id)}
+                className={`relative block px-3 py-1 rounded-lg transition duration-300 ${
+                  activeSection === link.id
+                    ? "text-transparent bg-clip-text bg-gradient-to-r from-[#1F2F5A] to-[#ae7e4b] shadow-[0_4px_12px_rgba(174,126,75,0.35)] scale-105"
+                    : "text-[#1F2F5A] hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#1F2F5A] hover:to-[#ae7e4b] hover:shadow-[0_4px_12px_rgba(174,126,75,0.35)] hover:scale-105"
+                }`}
+              >
+                {link.name}
+              </button>
+            </li>
+          ))}
         </ul>
 
-        {/* Hamburger (mobile only) */}
+        {/* Mobile Menu */}
         <div className="sm:hidden relative">
           <button
             ref={buttonRef}
@@ -81,7 +134,6 @@ export default function Navbar() {
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
               >
-                <title>Close menu</title>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
@@ -92,27 +144,23 @@ export default function Navbar() {
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
               >
-                <title>Open menu</title>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
           </button>
 
-          {/* Subtle blurred and slightly darkened backdrop */}
           <div
             onClick={() => setIsOpen(false)}
             className={`fixed inset-0 backdrop-blur-sm bg-black bg-opacity-10 transition-opacity duration-300
               ${isOpen ? "opacity-60 pointer-events-auto" : "opacity-0 pointer-events-none"} z-40`}
           />
 
-          {/* Sliding mobile menu */}
           <aside
             ref={menuRef}
             className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl rounded-l-3xl
               transform transition-transform duration-300 ease-in-out z-50
               ${isOpen ? "translate-x-0" : "translate-x-full"}`}
           >
-            {/* Close X inside the menu */}
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Close menu"
@@ -130,19 +178,19 @@ export default function Navbar() {
             </button>
 
             <nav className="flex flex-col p-8 space-y-8 mt-20 font-semibold text-[#1F2F5A]">
-              {["Home", "About", "Resources", "Contact"].map((item) => {
-                const href = item === "Resources" ? "#faq" : `#${item.toLowerCase()}`;
-                return (
-                  <a
-                    key={item}
-                    href={href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-lg hover:text-[#ae7e4b] transition transform hover:scale-105"
-                  >
-                    {item}
-                  </a>
-                );
-              })}
+              {links.map((link) => (
+                <button
+                  key={link.name}
+                  onClick={() => handleNavClick(link.id)}
+                  className={`text-lg px-3 py-1 rounded-lg transition duration-300 ${
+                    activeSection === link.id
+                      ? "text-transparent bg-clip-text bg-gradient-to-r from-[#1F2F5A] to-[#ae7e4b] shadow-[0_4px_12px_rgba(174,126,75,0.35)] scale-105"
+                      : "hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#1F2F5A] hover:to-[#ae7e4b] hover:shadow-[0_4px_12px_rgba(174,126,75,0.35)] hover:scale-105"
+                  }`}
+                >
+                  {link.name}
+                </button>
+              ))}
             </nav>
           </aside>
         </div>

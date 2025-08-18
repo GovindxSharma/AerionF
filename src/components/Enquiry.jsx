@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ContactSection = () => {
+const Enquiry = () => {
   const [status, setStatus] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -23,7 +23,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="bg-gray-50 py-20  scroll-mt-20 px-6 sm:px-8 lg:px-20">
+    <section id="enquire" className="bg-gray-50 py-20  scroll-mt-20 px-6 sm:px-8 lg:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         
         {/* Left Content */}
@@ -168,4 +168,4 @@ const ContactSection = () => {
   );
 };
 
-export default ContactSection;
+export default Enquiry;

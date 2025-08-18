@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <>
       {/* Footer */}
-      <footer className="bg-[#1F2F5A] text-white pt-12 pb-6 px-6 sm:px-8 lg:px-20">
+      <footer id="contact" className="bg-[#1F2F5A] text-white pt-20  pb-6 px-6 sm:px-8 lg:px-20 ">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div>
             <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">
@@ -17,22 +17,34 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#home" className="hover:text-[#72512E] transition">
+                <a
+                  href="#home"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="#about" className="hover:text-[#72512E] transition">
+                <a
+                  href="#about"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                >
                   About
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-[#72512E] transition">
+                <a
+                  href="#faq"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                >
                   Resources
                 </a>
               </li>
               <li>
-                <a href="#contact" className="hover:text-[#72512E] transition">
+                <a
+                  href="#contact"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                >
                   Contact Us
                 </a>
               </li>
@@ -47,7 +59,7 @@ const Footer = () => {
               <li>
                 <a
                   href="mailto:info@aerionmedtech.com"
-                  className="hover:text-[#72512E] transition"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Email
                 </a>
@@ -55,7 +67,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.linkedin.com/company/aerionmedtech/"
-                  className="hover:text-[#72512E] transition"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   LinkedIn
                 </a>
@@ -63,7 +75,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.instagram.com/aerionmedtech"
-                  className="hover:text-[#72512E] transition"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Instagram
                 </a>
@@ -71,7 +83,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.facebook.com/share/15wHuJBbeK"
-                  className="hover:text-[#72512E] transition"
+                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
                 >
                   Facebook
                 </a>
@@ -95,14 +107,14 @@ const Footer = () => {
             © 2025 Aerion Medtech. All rights reserved. |{" "}
             <span
               onClick={() => openModal("privacy")}
-              className="underline cursor-pointer text-[#F5DEB3]"
+              className="relative inline-block underline cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
             >
               Privacy Policy
             </span>{" "}
             |{" "}
             <span
               onClick={() => openModal("terms")}
-              className="underline cursor-pointer text-[#F5DEB3]"
+              className="relative inline-block underline cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
             >
               Terms of Use
             </span>
