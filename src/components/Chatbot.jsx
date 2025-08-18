@@ -8,7 +8,7 @@ export default function ChatBot() {
   const [loading, setLoading] = useState(false);
   const [unread, setUnread] = useState(false);
   const [hasFetchedGreeting, setHasFetchedGreeting] = useState(false);
-  const chatRef = useRef(null);
+  const messageEndRef = useRef(null); // ref to last message
   const audioRef = useRef(null);
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -75,10 +75,11 @@ export default function ChatBot() {
     }
   };
 
+  // 👇 Scroll to the TOP of the latest message when messages update
   useEffect(() => {
-    chatRef.current?.scrollTo({
-      top: chatRef.current.scrollHeight,
+    messageEndRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "start", // ensures scroll lands at the top of new message
     });
   }, [messages]);
 
@@ -103,7 +104,6 @@ export default function ChatBot() {
       }
     };
 
-    // Listen for user interaction to unlock audio
     const interactionEvents = [
       "click",
       "keydown",
@@ -118,7 +118,6 @@ export default function ChatBot() {
       window.addEventListener(event, unlockAudio, { once: true })
     );
 
-    // Handler to start the badge timer after modal closes
     let timerId = null;
     const startBadgeTimer = () => {
       timerId = setTimeout(() => {
@@ -128,10 +127,9 @@ export default function ChatBot() {
             audio.play().catch(() => {});
           }
         }
-      }, 5000); // 5 seconds delay after modal closes
+      }, 5000);
     };
 
-    // Listen for the custom event that modal closed
     window.addEventListener("aboutClosed", startBadgeTimer);
 
     return () => {
@@ -143,14 +141,12 @@ export default function ChatBot() {
     };
   }, [open]);
 
-  // Clear unread badge when chat opens
   useEffect(() => {
     if (open) {
       setUnread(false);
     }
   }, [open]);
 
-  // Fetch greeting when opened first time
   useEffect(() => {
     if (open && !hasFetchedGreeting) {
       fetchGreeting();
@@ -180,13 +176,11 @@ export default function ChatBot() {
           </div>
 
           {/* Chat Messages */}
-          <div
-            ref={chatRef}
-            className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50"
-          >
+          <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50">
             {messages.map((msg, i) => (
               <div
                 key={i}
+                ref={i === messages.length - 1 ? messageEndRef : null}
                 className={`flex items-start gap-2 ${
                   msg.sender === "user" ? "justify-end" : "justify-start"
                 }`}
