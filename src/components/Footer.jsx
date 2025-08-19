@@ -33,6 +33,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+              <a
+                href="#enquire"
+                className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+              >
+                Enquire
+              </a>
+            </li>
+              <li>
                 <a
                   href="#faq"
                   className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
@@ -45,7 +53,7 @@ const Footer = () => {
                   href="#contact"
                   className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
                 >
-                  Contact Us
+                  Contact
                 </a>
               </li>
             </ul>
