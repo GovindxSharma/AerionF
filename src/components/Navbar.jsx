@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const links = [
     { name: "Home", href: "#home", id: "home" },
-    { name: "About", href: "#about", id: "about" }, // will trigger also for OurServices
+    { name: "About", href: "#about", id: "about" },
     { name: "Enquire", href: "#enquire", id: "enquire" },
     { name: "Resources", href: "#faq", id: "faq" },
     { name: "Contact", href: "#contact", id: "contact" },
@@ -30,7 +30,6 @@ export default function Navbar() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Treat both 'about' and 'OurServices' as 'about'
             if (entry.target.id === "about" || entry.target.id === "OurServices") {
               setActiveSection("about");
             } else {
@@ -40,8 +39,8 @@ export default function Navbar() {
         });
       },
       {
-        threshold: 0.4,
-        rootMargin: "0px 0px -50px 0px",
+        threshold: 0.5, // trigger when 50% of section is visible
+        rootMargin: "-80px 0px -80px 0px", // offset for fixed navbar
       }
     );
 
@@ -66,19 +65,15 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Smooth scroll with offset
+  // Smooth scroll with offset & immediate active update
   const handleNavClick = (id) => {
-    let scrollToId = id;
-
-    // For About link, scroll to About section
-    if (id === "about") scrollToId = "about";
-
-    const el = document.getElementById(scrollToId);
+    const el = document.getElementById(id);
     if (el) {
       const yOffset = -80; // height of navbar
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
+    setActiveSection(id); // ensure activeSection updates immediately
     setIsOpen(false); // close mobile menu
   };
 
@@ -198,3 +193,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
