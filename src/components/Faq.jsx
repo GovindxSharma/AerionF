@@ -75,11 +75,23 @@ const FAQItem = ({ question, answer }) => {
         className="faq-header flex justify-between items-center bg-[#F6F6F6] px-6 py-4 cursor-pointer"
         onClick={() => setOpen(!open)}
       >
-        <span className="text-[#1F2F5A]">{question}</span>
+        {/* Split question into words */}
+        <span className="flex flex-wrap gap-x-1 text-[#1F2F5A]">
+          {question.split(" ").map((word, i) => (
+            <span
+              key={i}
+              className="hover:text-[#72512E] transition-colors duration-200"
+            >
+              {word}
+            </span>
+          ))}
+        </span>
+
         <span className="faq-icon text-xl font-bold text-[#72512E]">
           {open ? "−" : "+"}
         </span>
       </div>
+
       {open && (
         <div className="faq-content px-6 py-4 text-gray-700 text-sm sm:text-base">
           {answer}
@@ -88,6 +100,7 @@ const FAQItem = ({ question, answer }) => {
     </div>
   );
 };
+
 
 const FAQSection = () => {
   const [showMore, setShowMore] = useState(false);
