@@ -37,14 +37,14 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <a
-              href="#ContactUs"
+              href="#enquire"
               className="bg-white text-[#1F2F5A] font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition"
             >
               PARTNER WITH US
             </a>
 
             <div className="flex items-center gap-4 text-sm sm:text-base font-medium">
-              <a href="#ContactUs" className="text-white hover:underline">
+              <a href="#enquire" className="text-white hover:underline">
                 Request a Demo
               </a>
               <span className="text-white/70">|</span>

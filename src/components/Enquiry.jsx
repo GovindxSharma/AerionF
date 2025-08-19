@@ -144,13 +144,26 @@ const Enquiry = () => {
             <input type="hidden" name="_captcha" value="false" />
 
             <div className="text-right">
-              <button
-                type="submit"
-                className="bg-[#72512E] hover:bg-[#5b3f22] transition px-6 py-3 rounded-md text-white font-semibold"
-              >
-                Submit Inquiry
-              </button>
-            </div>
+  <button
+    type="submit"
+    className="relative px-6 py-3 rounded-lg font-semibold text-white
+               bg-gradient-to-r from-[#72512E] to-[#A67C52] 
+               shadow-lg transition-all duration-300
+               transform hover:scale-110 hover:-translate-y-1 hover:shadow-2xl
+               before:absolute before:top-0 before:left-[-75%] before:w-1/2 before:h-full
+               before:bg-white before:opacity-10 before:blur-lg before:rotate-12 before:transition-all before:duration-700
+               hover:before:translate-x-[250%] hover:before:opacity-30
+               after:absolute after:inset-0 after:rounded-lg after:border-2 after:border-[#FFD580] after:opacity-0
+               after:animate-pulse after:duration-1500 after:delay-300 after:ease-in-out after:hover:opacity-40"
+  >
+    Submit Inquiry
+  </button>
+</div>
+
+          
+
+          
+
           </form>
 
           {status && (
