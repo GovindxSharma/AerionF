@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaRobot, FaUser, FaPaperPlane, FaComments } from "react-icons/fa";
+import { FaRobot, FaUser, FaPaperPlane, FaComments, FaTimes } from "react-icons/fa";
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -8,8 +8,11 @@ export default function ChatBot() {
   const [loading, setLoading] = useState(false);
   const [unread, setUnread] = useState(false);
   const [hasFetchedGreeting, setHasFetchedGreeting] = useState(false);
-  const messageEndRef = useRef(null); // ref to last message
+
+  const messageEndRef = useRef(null);
   const audioRef = useRef(null);
+  const chatRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -32,7 +35,7 @@ export default function ChatBot() {
 
       const data = await res.json();
       setMessages([...newMessages, { sender: "bot", text: data.reply }]);
-    } catch (error) {
+    } catch {
       setMessages([
         ...newMessages,
         {
@@ -75,11 +78,11 @@ export default function ChatBot() {
     }
   };
 
-  // 👇 Scroll to the TOP of the latest message when messages update
+  // Scroll to latest message
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({
       behavior: "smooth",
-      block: "start", // ensures scroll lands at the top of new message
+      block: "start",
     });
   }, [messages]);
 
@@ -90,7 +93,6 @@ export default function ChatBot() {
     audio.load();
 
     let unlocked = false;
-
     const unlockAudio = () => {
       if (!unlocked) {
         audio
@@ -153,10 +155,28 @@ export default function ChatBot() {
     }
   }, [open]);
 
+  // Close chatbot on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        open &&
+        chatRef.current &&
+        !chatRef.current.contains(e.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   return (
     <>
       {/* Floating Button */}
       <button
+        ref={buttonRef}
         onClick={() => setOpen(!open)}
         className="fixed bottom-6 right-6 z-50 bg-[#1F2F5A] text-white w-14 h-14 rounded-full shadow-md hover:scale-105 transition-all flex items-center justify-center"
       >
@@ -170,9 +190,19 @@ export default function ChatBot() {
 
       {/* Chat Window */}
       {open && (
-        <div className="fixed bottom-24 right-6 w-80 h-[500px] bg-white text-black shadow-2xl rounded-xl flex flex-col border border-gray-200 overflow-hidden z-50 animate-[fadeIn_0.3s_ease-in-out]">
-          <div className="bg-[#1F2F5A] text-white p-3 text-center font-semibold">
-            Aerion Medtech Assistant
+        <div
+          ref={chatRef}
+          className="fixed bottom-24 right-6 w-80 h-[500px] bg-white text-black shadow-2xl rounded-xl flex flex-col border border-gray-200 overflow-hidden z-50 animate-[fadeIn_0.3s_ease-in-out]"
+        >
+          {/* Header with close button */}
+          <div className="bg-[#1F2F5A] text-white p-3 flex justify-between items-center font-semibold">
+            <span>Aerion Medtech Assistant</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="text-white hover:text-gray-200 transition"
+            >
+              <FaTimes size={18} />
+            </button>
           </div>
 
           {/* Chat Messages */}
