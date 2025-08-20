@@ -30,7 +30,10 @@ export default function Navbar() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (entry.target.id === "about" || entry.target.id === "OurServices") {
+            if (
+              entry.target.id === "about" ||
+              entry.target.id === "OurServices"
+            ) {
               setActiveSection("about");
             } else {
               setActiveSection(entry.target.id);
@@ -39,8 +42,8 @@ export default function Navbar() {
         });
       },
       {
-        threshold: 0.5, // trigger when 50% of section is visible
-        rootMargin: "-80px 0px -80px 0px", // offset for fixed navbar
+        threshold: 0.2, // less strict
+        rootMargin: "-100px 0px -100px 0px", // safe for different screens
       }
     );
 
@@ -65,16 +68,17 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Smooth scroll with offset & immediate active update
+  // Smooth scroll with dynamic navbar offset
   const handleNavClick = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -80; // height of navbar
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      const navHeight = document.querySelector("nav")?.offsetHeight || 80;
+      const y =
+        el.getBoundingClientRect().top + window.pageYOffset - navHeight;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
-    setActiveSection(id); // ensure activeSection updates immediately
-    setIsOpen(false); // close mobile menu
+    setActiveSection(id);
+    setIsOpen(false);
   };
 
   return (
@@ -129,7 +133,11 @@ export default function Navbar() {
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
               <svg
@@ -139,22 +147,31 @@ export default function Navbar() {
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
 
+          {/* Backdrop */}
           <div
             onClick={() => setIsOpen(false)}
-            className={`fixed inset-0 backdrop-blur-sm bg-black bg-opacity-10 transition-opacity duration-300
-              ${isOpen ? "opacity-60 pointer-events-auto" : "opacity-0 pointer-events-none"} z-40`}
+            className={`fixed inset-0 backdrop-blur-sm bg-black bg-opacity-10 transition-opacity duration-300 ${
+              isOpen
+                ? "opacity-60 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
+            } z-40`}
           />
 
+          {/* Slide-in menu */}
           <aside
             ref={menuRef}
-            className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl rounded-l-3xl
-              transform transition-transform duration-300 ease-in-out z-50
-              ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+            className={`fixed top-0 right-0 h-full w-64 bg-white shadow-2xl rounded-l-3xl transform transition-transform duration-300 ease-in-out z-50 ${
+              isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
           >
             <button
               onClick={() => setIsOpen(false)}
@@ -168,7 +185,11 @@ export default function Navbar() {
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
 
@@ -193,5 +214,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-
