@@ -9,65 +9,39 @@ const Footer = () => {
   return (
     <>
       {/* Footer */}
-      <footer id="contact" className="bg-[#1F2F5A] text-white pt-20  pb-6 px-6 sm:px-8 lg:px-20 ">
+      <footer id="contact" className="bg-[#1F2F5A] text-white pt-20 pb-6 px-6 sm:px-8 lg:px-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">
-              Quick Links
-            </h3>
+            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="#home"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-              <a
-                href="#enquire"
-                className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
-              >
-                Enquire
-              </a>
-            </li>
-              <li>
-                <a
-                  href="#faq"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Resources
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Contact
-                </a>
-              </li>
+              {[
+                { label: "Home", href: "#home" },
+                { label: "About", href: "#about" },
+                { label: "Enquire", href: "#enquire" },
+                { label: "Resources", href: "#faq" },
+                { label: "Contact", href: "#contact" },
+              ].map((link, i) => (
+                <li key={i}>
+                  <a
+                    href={link.href}
+                    className="hover:text-[#72512E] transition duration-300"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Connect With Us */}
           <div>
-            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">
-              Connect With Us
-            </h3>
+            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">Connect With Us</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="mailto:info@aerionmedtech.com"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                  className="hover:text-[#72512E] transition duration-300"
                 >
                   Email
                 </a>
@@ -75,7 +49,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.linkedin.com/company/aerionmedtech/"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                  className="hover:text-[#72512E] transition duration-300"
                 >
                   LinkedIn
                 </a>
@@ -83,7 +57,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.instagram.com/aerionmedtech"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                  className="hover:text-[#72512E] transition duration-300"
                 >
                   Instagram
                 </a>
@@ -91,7 +65,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.facebook.com/share/15wHuJBbeK"
-                  className="relative inline-block hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+                  className="hover:text-[#72512E] transition duration-300"
                 >
                   Facebook
                 </a>
@@ -99,10 +73,9 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* Locations */}
           <div>
-            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">
-              Locations
-            </h3>
+            <h3 className="text-lg font-semibold text-[#F5DEB3] mb-4">Locations</h3>
             <ul className="space-y-2 text-sm">
               <li>India</li>
               <li>Operations Worldwide</li>
@@ -110,22 +83,36 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Copyright + Policy Links */}
         <div className="text-sm text-center border-t border-[#72512E]/30 pt-6">
           <p className="text-gray-300">
             © 2025 Aerion Medtech. All rights reserved. |{" "}
             <span
               onClick={() => openModal("privacy")}
-              className="relative inline-block underline cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+              className="cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300"
             >
               Privacy Policy
             </span>{" "}
             |{" "}
             <span
               onClick={() => openModal("terms")}
-              className="relative inline-block underline cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#72512E] after:transition-all after:duration-300 hover:after:w-full"
+              className="cursor-pointer text-[#F5DEB3] hover:text-[#72512E] transition duration-300"
             >
               Terms of Use
             </span>
+          </p>
+
+          {/* ✅ Credit Line */}
+          <p className="mt-2 text-xs text-gray-400">
+            Designed & Developed by{" "}
+            <a
+              href="https://govind-sharma.onrender.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#F5DEB3] hover:text-[#72512E] transition duration-300"
+            >
+              Govind Sharma
+            </a>
           </p>
         </div>
       </footer>
@@ -160,18 +147,14 @@ const Footer = () => {
             >
               {activeModal === "privacy" && (
                 <>
-                  <h2 className="text-2xl font-bold text-[#1F2F5A] mb-3">
-                    Privacy Policy
-                  </h2>
+                  <h2 className="text-2xl font-bold text-[#1F2F5A] mb-3">Privacy Policy</h2>
                   <p className="text-xs sm:text-sm text-gray-700 mb-3">
                     <strong>Effective Date:</strong> 25 July 2025
                   </p>
                   <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
                     <p>
-                      Welcome to Aerion Medtech. We are committed to protecting
-                      your privacy and safeguarding your personal information.
-                      This policy explains how we collect, use, share, and
-                      protect your data when you use our site or services.
+                      Welcome to Aerion Medtech. We are committed to protecting your privacy and
+                      safeguarding your personal information.
                     </p>
                     <p>
                       <strong>1. Information We Collect</strong>
@@ -199,16 +182,12 @@ const Footer = () => {
                     </p>
                     <p>
                       <strong>5. Third-Party Links</strong>
-                      <br />• We’re not responsible for external sites’ privacy
-                      practices.
+                      <br />• We’re not responsible for external sites’ privacy practices.
                     </p>
                     <p>
                       <strong>6. Updates</strong>
-                      <br />• This policy may be updated. For any queries, email:{" "}
-                      <a
-                        href="mailto:info@aerionmedtech.com"
-                        className="text-[#1F2F5A] underline"
-                      >
+                      <br />• For any queries, email:{" "}
+                      <a href="mailto:info@aerionmedtech.com" className="text-[#1F2F5A]">
                         info@aerionmedtech.com
                       </a>
                     </p>
@@ -218,56 +197,30 @@ const Footer = () => {
 
               {activeModal === "terms" && (
                 <>
-                  <h2 className="text-2xl font-bold text-[#1F2F5A] mb-4">
-                    Terms of Use
-                  </h2>
+                  <h2 className="text-2xl font-bold text-[#1F2F5A] mb-4">Terms of Use</h2>
                   <p className="text-sm text-gray-700 mb-4">
                     <strong>Effective Date:</strong> 25 July 2025
                   </p>
                   <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
                     <p>
                       <strong>1. Permitted Use</strong>
-                      <br />• This website is provided for informational
-                      purposes only.
-                      <br />• You agree not to use the website or its content
-                      for any unlawful, harmful, or unauthorized purposes.
+                      <br />• This website is for informational purposes only.
                     </p>
                     <p>
-                      <strong>2. Intellectual Property (IP)</strong>
-                      <br />• All website content, including text, graphics,
-                      logos, and other materials, is the exclusive property of
-                      Aerion Medtech.
-                      <br />• No content may be copied, reused, or distributed
-                      without our prior written consent.
+                      <strong>2. Intellectual Property</strong>
+                      <br />• All content belongs to Aerion Medtech.
                     </p>
                     <p>
                       <strong>3. Disclaimer</strong>
-                      <br />• The information provided on this website is made
-                      available on an "as is" and "as available" basis.
-                      <br />• We make no warranties or representations about
-                      the accuracy, reliability, or completeness of the
-                      content.
+                      <br />• Content provided “as is” without warranties.
                     </p>
                     <p>
                       <strong>4. Limitations of Liability</strong>
-                      <br />• Aerion Medtech shall not be liable for any direct,
-                      indirect, incidental, or consequential damages arising
-                      from your use or inability to use the website or its
-                      content.
+                      <br />• Aerion Medtech is not liable for any damages arising from website use.
                     </p>
                     <p>
                       <strong>5. Third-Party Links</strong>
-                      <br />• This website may contain links to external
-                      websites or resources.
-                      <br />• We are not responsible for the content or
-                      practices of any third-party sites.
-                    </p>
-                    <p>
-                      <strong>6. Changes to Terms</strong>
-                      <br />• We reserve the right to modify these Terms of Use
-                      at any time, without prior notice.
-                      <br />• Continued use of the site implies acceptance of
-                      the current version of these Terms.
+                      <br />• We’re not responsible for external sites.
                     </p>
                   </div>
                 </>
@@ -277,31 +230,16 @@ const Footer = () => {
         </div>
       )}
 
-      {/* Modal fade-in animation */}
+      {/* Animation + Scrollbar Styles */}
       <style>
         {`
           @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
           }
-          /* Custom scrollbar */
-          div::-webkit-scrollbar {
-            width: 6px;
-          }
-          div::-webkit-scrollbar-track {
-            background: #f0f0f0;
-            border-radius: 3px;
-          }
-          div::-webkit-scrollbar-thumb {
-            background: #72512E;
-            border-radius: 3px;
-          }
+          div::-webkit-scrollbar { width: 6px; }
+          div::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+          div::-webkit-scrollbar-thumb { background: #72512E; border-radius: 3px; }
         `}
       </style>
     </>
